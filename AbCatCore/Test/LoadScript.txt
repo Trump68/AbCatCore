@@ -1,0 +1,2 @@
+﻿LOAD CATALOG c:\AB\AbCatCore\AbCatCore\Test\
+UPDATE FOLDER c:\AB\AbCatCore\AbCatCore\Test\

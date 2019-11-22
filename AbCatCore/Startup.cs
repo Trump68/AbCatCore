@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AbCatCore.Helpers;
+using AbCatCore.Middleware;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -25,13 +27,12 @@ namespace AbCatCore
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+            services.AddSingleton<ICatalogDb, CatalogDb>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
-        {
-            
-            var path = Configuration["asd"];
+        {                        
 
             if (env.IsDevelopment())
             {
@@ -44,8 +45,8 @@ namespace AbCatCore
             app.UseStaticFiles();
 
             app.UseRouting();
-
-            app.UseAuthorization();
+            
+            app.UseCatalogLoader();
 
             app.UseEndpoints(endpoints =>
             {

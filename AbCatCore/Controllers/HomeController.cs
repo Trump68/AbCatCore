@@ -6,20 +6,24 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using AbCatCore.Models;
+using AbCatCore.Helpers;
 
 namespace AbCatCore.Controllers
 {
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly ICatalogDb _Db;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, ICatalogDb catalogDb)
         {
             _logger = logger;
+            _Db = catalogDb;
         }
 
         public IActionResult Index()
         {
+            _Db.Load();
             return View();
         }
 

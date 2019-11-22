@@ -17,7 +17,7 @@
     },
     "AbCatCore": {
       "commandName": "Project",
-      "commandLineArgs": "--asd sdasdfffsd",
+      "commandLineArgs": "c:\\AB\\AbCatCore\\AbCatCore\\Test\\LoadScript.txt",
       "launchBrowser": true,
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"

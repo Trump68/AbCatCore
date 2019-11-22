@@ -1,17 +1,9 @@
-﻿using DevExpress.Mvvm;
-using StoGen.Classes;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
+using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
 using System.Xml.Serialization;
 
 namespace EPCat.Model
@@ -21,6 +13,49 @@ namespace EPCat.Model
     [Serializable]
     public class EpItem
     {
+        static string p_GID = "GID:";
+        static string p_Name = "NAME:";
+        static string p_Catalog = "CATALOG:";
+        static string p_Serie = "SERIE:";
+        static string p_LastEdit = "LASTEDIT:";
+        static string p_AltTitle = "ALTTITLE:";
+        static string p_Country = "COUNTRY:";
+        static string p_Year = "YEAR:";
+        static string p_Month = "MONTH:";
+        static string p_Day = "Day:";
+        static string p_Rated = "RATED:";
+        static string p_XRated = "XRATED:";
+        static string p_Kind = "KIND:";
+        static string p_Type = "TYPE:";
+        static string p_Stage = "STAGE:";
+        static string p_Variant = "VARIANT:";
+        static string p_Brand = "BRAND:";
+        static string p_Star = "STAR:";
+        static string p_MyDescr = "MYCOMMENTS:";
+        static string p_Director = "Director:";
+        static string p_Studio = "Studio:";
+        static string p_IMDB = "IMDB:";
+        static string p_LastCheck = "LastCheck:";
+        static string p_PersonName = "PersonName:";
+        static string p_PersonAge = "PersonAge:";
+        static string p_PersonSex = "PersonSex:";
+        static string p_PersonType = "PersonType:";
+        static string p_PersonKind = "PersonKind:";
+        static string p_Size = "Size:";
+        static string p_Length = "Length:";
+        static string p_COMMENTS_BEGIN = "COMMENTS:<";
+        static string p_COMMENTS_END = ">";
+        public static string p_PassportName = "PASSPORT.TXT";
+        public static string p_PassportCapsName = "PASSPORT_CAPS.TXT";
+        public static string p_PassportEventsName = "PASSPORT_EVENTS.TXT";
+        public static string p_PassportFiguresName = "PASSPORT_FIGURES.TXT";
+        public static string p_PassportPartsName = "PASSPORT_PARTS.TXT";
+        public static string p_PassportBackgroundName = "PASSPORT_BACKGROUND.TXT";
+        public static string p_PassportCompositionName = "PASSPORT_COMPOSITION.TXT";
+
+        public static string CurrentPassportImage = p_PassportCapsName;
+        internal static string CatalogPosterDir;
+
         public Guid GID { get; set; }
         public bool GroupsEnabled { get { return true; } }
         public string ItemPath { get; set; }
@@ -34,16 +69,15 @@ namespace EPCat.Model
                 return Path.Combine(Path.GetDirectoryName(ItemPath), "POSTER.JPG");
             }
         }
-
-        public ImageSource Poster
+        public Image Poster
         {
             get
             {
                 // try to get from source dir
                 Uri path = new Uri(PosterPath, UriKind.Absolute);
-                if (File.Exists(path.LocalPath)) return new BitmapImage(path);
+                if (File.Exists(path.LocalPath)) return new Bitmap(path.LocalPath);
                 GetLeastNumImage(Path.GetDirectoryName(ItemPath), PosterPath);
-                if (File.Exists(path.LocalPath)) return new BitmapImage(path);
+                if (File.Exists(path.LocalPath)) return new Bitmap(path.LocalPath);
                 //GetLeastNumImage(Path.GetDirectoryName(ItemPath) + @"\EVENTS\", PosterPath);
                 //if (File.Exists(path.LocalPath)) return new BitmapImage(path);
 
@@ -52,7 +86,7 @@ namespace EPCat.Model
                 string dirPoster = EpItem.CatalogPosterDir;
                 dirPoster = Path.Combine(dirPoster, $"{GID}.jpg");
                 path = new Uri(dirPoster, UriKind.Absolute);
-                if (File.Exists(path.LocalPath)) return new BitmapImage(path);
+                if (File.Exists(path.LocalPath)) return new Bitmap(path.LocalPath);
 
                 return null;
             }
@@ -96,20 +130,20 @@ namespace EPCat.Model
                 return Path.GetDirectoryName(ItemPath);
             }
         }
-        private string _SoundDirectory;
-        [XmlIgnore]
-        public string SoundDirectory
-        {
-            get
-            {
-                if (_SoundDirectory == null)
-                {
-                    if (string.IsNullOrEmpty(ItemPath)) return string.Empty;
-                    _SoundDirectory = Path.Combine(Path.GetDirectoryName(ItemPath), "SOUND");
-                }
-                return _SoundDirectory;
-            }
-        }
+        //private string _SoundDirectory;
+        //[XmlIgnore]
+        //public string SoundDirectory
+        //{
+        //    get
+        //    {
+        //        if (_SoundDirectory == null)
+        //        {
+        //            if (string.IsNullOrEmpty(ItemPath)) return string.Empty;
+        //            _SoundDirectory = Path.Combine(Path.GetDirectoryName(ItemPath), "SOUND");
+        //        }
+        //        return _SoundDirectory;
+        //    }
+        //}
 
         public List<string> _Videos = null;
         [XmlIgnore]
@@ -125,108 +159,12 @@ namespace EPCat.Model
                 }
                 List<string> rez = new List<string>();
                 rez.AddRange(_Videos);
-                rez.AddRange(Sounds);
+                //rez.AddRange(Sounds);
                 return rez;
             }
         }
 
 
-        private List<string> _Sounds = null;
-        [XmlIgnore]
-        public List<string> Sounds
-        {
-            get
-            {
-                if (_Sounds == null)
-                {
-                    if (string.IsNullOrEmpty(SoundDirectory)) _Sounds = new List<string>();
-                    else if (!Directory.Exists(SoundDirectory)) _Sounds = new List<string>();
-                    else _Sounds = Directory.GetFiles(SoundDirectory, "*.mp3").ToList();
-                }
-                return _Sounds;
-            }
-        }
-        List<CapsItem> _Caps = null;
-        [XmlIgnore]
-        public List<CapsItem> Caps
-        {
-            get
-            {
-                if (_Caps == null || CurrentPassport != CurrentPassportImage)
-                {
-                    RefreshImageLists();
-                    CurrentPassport = CurrentPassportImage;
-                }
-                return _Caps;
-            }
-        }
-        private string CurrentPassport;
-        public void RefreshImageLists()
-        {
-            CapsPassportData.Clear();
-            string foldername = Path.GetFileNameWithoutExtension(CurrentPassportImage).Split('_')[1];
-            string capspath = Path.Combine(ItemDirectory, foldername);
-            string ImagePassportPath = Path.Combine(ItemDirectory, CurrentPassportImage);
-            _Caps = new List<CapsItem>();
-            List<CapsItem> itemList = new List<CapsItem>();
-            if (!CapsPassportData.Any() && File.Exists(ImagePassportPath))
-            {
-                List<string> passport = new List<string>(File.ReadAllLines(ImagePassportPath));
-                if (passport != null)
-                {
-                    itemList = CapsItem.GetListFromPassport(passport);
-                }
-            }
-            itemList.ForEach(x => { x.Parent = itemList.Where(p => p.Id == x.ParentId).FirstOrDefault(); x.Owner = _Caps; });
-
-            if (Directory.Exists(capspath))
-            {
-                List<string> files = Directory.GetFiles(capspath, "*.jpg").ToList();
-                files.AddRange(Directory.GetFiles(capspath, "*.png"));
-
-                int pos = 0;
-                List<string> newfiles = new List<string>();
-                foreach (var f in files)
-                {
-                    pos++;
-                    string fn = CapsItem.ConvertRenameFilename(f, pos);
-                    newfiles.Add(fn);
-                }
-
-                foreach (var f in newfiles)
-                {
-
-                    string fn = Path.GetFileName(f);
-                    CapsItem existItem = itemList.Where(x => x.Id == fn).FirstOrDefault();
-                    if (existItem != null)
-                    {
-                        existItem.ItemPath = f;
-                        _Caps.Add(existItem);
-                    }
-                    else
-                    {
-                        CapsItem newitem = new CapsItem() { ItemPath = f, Id = fn, Owner = _Caps };
-                        _Caps.Add(newitem);
-                    }
-                }
-
-            }
-        }
-        public void SaveImagePassport()
-        {
-            if (_Caps != null)
-            {
-                List<string> lines = new List<string>();
-                foreach (var cap in _Caps)
-                {
-                    string s = CapsItem.SetToPassport(cap);
-                    if (!string.IsNullOrEmpty(s)) lines.Add(s);
-                }
-                if (lines.Any())
-                    File.WriteAllLines(Path.Combine(this.ItemDirectory, CurrentPassportImage), lines);
-            }
-        }
-        public List<CapsItem> CapsPassportData = new List<CapsItem>();
         public bool VideoPresent
         {
             get
@@ -235,14 +173,6 @@ namespace EPCat.Model
             }
         }
         public string Name { get; set; }
-        [XmlIgnore]
-        public int Scenes
-        {
-            get
-            {
-                return this.Clips.Count;
-            }
-        }
         public string Catalog { get; set; } = "MOV";
         public int LastEdit { get; set; }
         public string AltTitle { get; set; }
@@ -287,87 +217,6 @@ namespace EPCat.Model
             }
         }
 
-
-
-        private ObservableCollection<MovieSceneInfo> _Clips = null;
-        public ObservableCollection<MovieSceneInfo> Clips
-        {
-            get
-            {
-                if (_Clips == null)
-                {
-                    _Clips = new ObservableCollection<MovieSceneInfo>();
-
-                }
-                foreach (var item in _Clips)
-                {
-                    item.Path = Path.GetDirectoryName(this.ItemPath);
-                    item.N = _Clips.IndexOf(item) + 1;
-                }
-                return _Clips;
-            }
-        }
-        private ObservableCollection<CombinedSceneInfo> _CombinedScenes = null;
-        public ObservableCollection<CombinedSceneInfo> CombinedScenes
-        {
-            get
-            {
-                if (_CombinedScenes == null)
-                {
-                    _CombinedScenes = new ObservableCollection<CombinedSceneInfo>();
-
-                }
-                foreach (var item in _CombinedScenes)
-                {
-                    item.N = _CombinedScenes.IndexOf(item) + 1;
-                    if (item.Kind != 2 && item.Kind != 4)
-                        item.Path = Path.GetDirectoryName(this.ItemPath);
-                    if (item.Kind == 7)
-                    {
-                        if (string.IsNullOrEmpty(item.File) && !string.IsNullOrEmpty(item.Description))
-                        {
-                            string filename = Path.Combine(this.SoundDirectory, item.Description + ".mp3");
-                            if (File.Exists(filename))
-                            {
-                                string gid = Guid.NewGuid().ToString();
-                                string newpath = Path.GetFileNameWithoutExtension(filename);
-                                newpath = $"{newpath}.{gid}.mp3";
-                                newpath = Path.Combine(this.SoundDirectory, newpath);
-                                File.Move(filename, newpath);
-                                item.File = gid;
-                            }
-
-                        }
-                    }
-                }
-                return _CombinedScenes;
-            }
-        }
-
-        private ObservableCollection<SkyrimPosePositionInfo> _PosePositions = null;
-        public ObservableCollection<SkyrimPosePositionInfo> PosePositions
-        {
-            get
-            {
-                if (_PosePositions == null)
-                {
-                    _PosePositions = new ObservableCollection<SkyrimPosePositionInfo>();
-                }
-                return _PosePositions;
-            }
-        }
-        private ObservableCollection<SkyrimMotionInfo> _Motions = null;
-        public ObservableCollection<SkyrimMotionInfo> Motions
-        {
-            get
-            {
-                if (_Motions == null)
-                {
-                    _Motions = new ObservableCollection<SkyrimMotionInfo>();
-                }
-                return _Motions;
-            }
-        }
 
         [XmlIgnore]
         public bool SourceFolderExist { get; set; } = false;
@@ -425,84 +274,9 @@ namespace EPCat.Model
             this.Comments.Clear();
             this.Comments.AddRange(item.Comments);
 
-            this.Clips.Clear();
-            foreach (var it in item.Clips)
-            {
-                this.Clips.Add(it);
-            }
-
-            this.CombinedScenes.Clear();
-            foreach (var it in item.CombinedScenes)
-            {
-                this.CombinedScenes.Add(it);
-            }
-
         }
 
-        static string p_GID = "GID:";
-        static string p_Name = "NAME:";
-        static string p_Catalog = "CATALOG:";
-        static string p_Serie = "SERIE:";
-        static string p_LastEdit = "LASTEDIT:";
-        static string p_AltTitle = "ALTTITLE:";
-        static string p_Country = "COUNTRY:";
-        static string p_Year = "YEAR:";
-        static string p_Month = "MONTH:";
-        static string p_Day = "Day:";
-        static string p_Rated = "RATED:";
-        static string p_XRated = "XRATED:";
-        static string p_Kind = "KIND:";
-        static string p_Type = "TYPE:";
-        static string p_Stage = "STAGE:";
-        static string p_Variant = "VARIANT:";
-        static string p_Brand = "BRAND:";
-        static string p_Star = "STAR:";
-        static string p_MyDescr = "MYCOMMENTS:";
-        static string p_Director = "Director:";
-        static string p_Studio = "Studio:";
-        static string p_IMDB = "IMDB:";
-        static string p_LastCheck = "LastCheck:";
 
-        static string p_PersonName = "PersonName:";
-        static string p_PersonAge = "PersonAge:";
-        static string p_PersonSex = "PersonSex:";
-        static string p_PersonType = "PersonType:";
-        static string p_PersonKind = "PersonKind:";
-        static string p_Size = "Size:";
-        static string p_Length = "Length:";
-
-        static string p_Type00 = "TYPE00:";
-        static string p_Type01 = "TYPE01:";
-        static string p_Type02 = "TYPE02:";
-        static string p_Type03 = "TYPE03:";
-        static string p_Type04 = "TYPE04:";
-        static string p_Type05 = "TYPE05:";
-        static string p_Type06 = "TYPE06:";
-        static string p_Type07 = "TYPE07:";
-        static string p_Type08 = "TYPE08:";
-        static string p_Type09 = "TYPE09:";
-
-        static string p_COMMENTS_BEGIN = "COMMENTS:<";
-        static string p_COMMENTS_END = ">";
-        static string p_SCENDATA_BEGIN = "<SCENDATA";
-        static string p_SCENDATA_END = "SCENDATA>";
-        static string p_COMBDATA_BEGIN = "<COMBDATA";
-        static string p_COMBDATA_END = "COMBDATA>";
-        static string p_POSEPOSITION_BEGIN = "<POSEPOSITION";
-        static string p_POSEPOSITION_END = "POSEPOSITION>";
-        static string p_MOTION_BEGIN = "<MOTION";
-        static string p_MOTION_END = "MOTION>";
-
-        public static string p_PassportName = "PASSPORT.TXT";
-        public static string p_PassportCapsName = "PASSPORT_CAPS.TXT";
-        public static string p_PassportEventsName = "PASSPORT_EVENTS.TXT";
-        public static string p_PassportFiguresName = "PASSPORT_FIGURES.TXT";
-        public static string p_PassportPartsName = "PASSPORT_PARTS.TXT";
-        public static string p_PassportBackgroundName = "PASSPORT_BACKGROUND.TXT";
-        public static string p_PassportCompositionName = "PASSPORT_COMPOSITION.TXT";
-
-        public static string CurrentPassportImage = p_PassportCapsName;
-        internal static string CatalogPosterDir;
 
         internal static void SetCurrentImagePassort(int selectedIndex)
         {
@@ -541,6 +315,7 @@ namespace EPCat.Model
             return $@"{dir}\POSTERS.{catname}";
         }
 
+        // PASSPORT LOAD-SAVE
         internal static List<string> SetToPassport(EpItem item)
         {
             List<string> result = new List<string>();
@@ -620,75 +395,6 @@ namespace EPCat.Model
                 result.AddRange(ttt);
             }
 
-            if (item.Clips.Count == 1)
-            {
-                result.Add(p_SCENDATA_BEGIN + item.Clips.First().GenerateString() + p_SCENDATA_END);
-            }
-            else if (item.Clips.Count > 0)
-            {
-                List<string> ttt = new List<string>();
-                foreach (var it in item.Clips)
-                {
-                    ttt.Add(it.GenerateString());
-                }
-
-                ttt[0] = p_SCENDATA_BEGIN + ttt.First();
-                ttt[ttt.Count - 1] = ttt.Last() + p_SCENDATA_END;
-                result.AddRange(ttt);
-            }
-
-            // combined scenes
-            if (item.CombinedScenes.Count == 1)
-            {
-                result.Add(p_COMBDATA_BEGIN + item.CombinedScenes.First().GenerateString() + p_COMBDATA_END);
-            }
-            else if (item.CombinedScenes.Count > 0)
-            {
-                List<string> ttt = new List<string>();
-                foreach (var it in item.CombinedScenes)
-                {
-                    ttt.Add(it.GenerateString());
-                }
-
-                ttt[0] = p_COMBDATA_BEGIN + ttt.First();
-                ttt[ttt.Count - 1] = ttt.Last() + p_COMBDATA_END;
-                result.AddRange(ttt);
-            }
-
-            // pose positions
-            if (item.PosePositions.Count == 1)
-            {
-                result.Add(p_POSEPOSITION_BEGIN + item.PosePositions.First().GenerateString() + p_POSEPOSITION_END);
-            }
-            else if (item.PosePositions.Count > 0)
-            {
-                List<string> ttt = new List<string>();
-                foreach (var it in item.PosePositions)
-                {
-                    ttt.Add(it.GenerateString());
-                }
-                ttt[0] = p_POSEPOSITION_BEGIN + ttt.First();
-                ttt[ttt.Count - 1] = ttt.Last() + p_POSEPOSITION_END;
-                result.AddRange(ttt);
-            }
-
-            // motions
-            if (item.Motions.Count == 1)
-            {
-                result.Add(p_MOTION_BEGIN + item.Motions.First().GenerateString() + p_MOTION_END);
-            }
-            else if (item.Motions.Count > 0)
-            {
-                List<string> ttt = new List<string>();
-                foreach (var it in item.Motions)
-                {
-                    ttt.Add(it.GenerateString());
-                }
-                ttt[0] = p_MOTION_BEGIN + ttt.First();
-                ttt[ttt.Count - 1] = ttt.Last() + p_MOTION_END;
-                result.AddRange(ttt);
-            }
-
             return result;
         }
         internal static EpItem GetFromPassport(List<string> passport, string path)
@@ -696,114 +402,15 @@ namespace EPCat.Model
             EpItem result = new EpItem(1);
             result.ItemPath = path;
             bool isComments = false;
-            bool isScenData = false;
-            bool isCombData = false;
-            bool isPosePosition = false;
-            bool isMotion = false;
+
             foreach (var line in passport)
             {
+
                 string term = line.Trim();
-                // clipdata                       
-                if (term.StartsWith(p_SCENDATA_BEGIN))
-                {
-                    term = term.Replace(p_SCENDATA_BEGIN, string.Empty);
-                    if (!string.IsNullOrWhiteSpace(term))
-                    {
-                        MovieSceneInfo sd = new MovieSceneInfo();
-                        sd.LoadFromString(term);
-                        if (!string.IsNullOrEmpty(sd.ID))
-                            result.Clips.Add(sd);
-                    }
-                    isScenData = true;
-                }
-                else if (isScenData)
-                {
-                    if (term.Contains(p_SCENDATA_END))
-                    {
-                        term = term.Replace(p_SCENDATA_END, string.Empty);
-                        isScenData = false;
-                    }
-                    MovieSceneInfo sd = new MovieSceneInfo();
-                    sd.LoadFromString(term);
-                    result.Clips.Add(sd);
-                }
 
-                //comb data
-                else if (term.StartsWith(p_COMBDATA_BEGIN))
-                {
-                    term = term.Replace(p_COMBDATA_BEGIN, string.Empty);
-                    if (!string.IsNullOrWhiteSpace(term))
-                    {
-                        CombinedSceneInfo sd = new CombinedSceneInfo();
-                        sd.LoadFromString(term);
-                        if (!string.IsNullOrEmpty(sd.ID))
-                            result.CombinedScenes.Add(sd);
-                    }
-                    isCombData = true;
-                }
-                else if (isCombData)
-                {
-                    if (term.Contains(p_COMBDATA_END))
-                    {
-                        term = term.Replace(p_COMBDATA_END, string.Empty);
-                        isCombData = false;
-                    }
-                    CombinedSceneInfo sd = new CombinedSceneInfo();
-                    sd.LoadFromString(term);
-                    result.CombinedScenes.Add(sd);
-                }
+       
 
-                //pose position
-                else if (term.StartsWith(p_POSEPOSITION_BEGIN))
-                {
-                    term = term.Replace(p_POSEPOSITION_BEGIN, string.Empty);
-                    if (!string.IsNullOrWhiteSpace(term))
-                    {
-                        SkyrimPosePositionInfo sd = new SkyrimPosePositionInfo();
-                        sd.LoadFromString(term);
-                        if (!string.IsNullOrEmpty(sd.ID))
-                            result.PosePositions.Add(sd);
-                    }
-                    isPosePosition = true;
-                }
-                else if (isPosePosition)
-                {
-                    if (term.Contains(p_POSEPOSITION_END))
-                    {
-                        term = term.Replace(p_POSEPOSITION_END, string.Empty);
-                        isPosePosition = false;
-                    }
-                    SkyrimPosePositionInfo sd = new SkyrimPosePositionInfo();
-                    sd.LoadFromString(term);
-                    result.PosePositions.Add(sd);
-                }
-
-                //motion
-                else if (term.StartsWith(p_MOTION_BEGIN))
-                {
-                    term = term.Replace(p_MOTION_BEGIN, string.Empty);
-                    if (!string.IsNullOrWhiteSpace(term))
-                    {
-                        SkyrimMotionInfo sd = new SkyrimMotionInfo();
-                        sd.LoadFromString(term);
-                        if (!string.IsNullOrEmpty(sd.ID))
-                            result.Motions.Add(sd);
-                    }
-                    isMotion = true;
-                }
-                else if (isMotion)
-                {
-                    if (term.Contains(p_MOTION_END))
-                    {
-                        term = term.Replace(p_MOTION_END, string.Empty);
-                        isMotion = false;
-                    }
-                    SkyrimMotionInfo sd = new SkyrimMotionInfo();
-                    sd.LoadFromString(term);
-                    result.Motions.Add(sd);
-                }
-
-                else if (term.StartsWith(p_COMMENTS_BEGIN))
+                if (term.StartsWith(p_COMMENTS_BEGIN))
                 {
                     term = term.Replace(p_COMMENTS_BEGIN, string.Empty);
                     term = term.Replace(p_COMMENTS_END, string.Empty);
