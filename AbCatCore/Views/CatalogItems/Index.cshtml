@@ -1,0 +1,260 @@
+﻿@model IEnumerable<EPCat.Model.EpItem>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+
+        <table class="table-bordered  table-hover table-ssm">
+            <thead class="thead-dark">
+                <tr>
+                    @*<th>
+                        @Html.DisplayNameFor(model => model.GID)
+                    </th>*@
+                    @*<th>
+                        @Html.DisplayNameFor(model => model.GroupsEnabled)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.ItemPath)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.ItemType)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.ParentID)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.PosterPath)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.ItemDirectory)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.VideoPresent)
+                    </th>*@
+                    <th>
+                        @Html.DisplayNameFor(model => model.Name)
+                    </th>
+                    @*<th>
+                        @Html.DisplayNameFor(model => model.Catalog)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.LastEdit)
+                    </th>*@
+                    <th>
+                        @Html.DisplayNameFor(model => model.AltTitle)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Country)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Year)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Month)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Day)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Rated)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.XRated)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Stage)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Variant)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Kind)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Serie)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Type)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Brand)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Star)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.MyDescr)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Director)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Studio)
+                    </th>
+                    @*<th>
+                        @Html.DisplayNameFor(model => model.IMDB)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.PersonName)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.PersonAge)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.PersonSex)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.PersonType)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.PersonKind)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.LastCheck)
+                    </th>*@
+                    <th>
+                        @Html.DisplayNameFor(model => model.Size)
+                    </th>
+                    @*<th>
+                        @Html.DisplayNameFor(model => model.Length)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.CommentsAsString)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.SourceFolderExist)
+                    </th>*@
+                    @*<th></th>*@
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        @*<td>
+                            @Html.DisplayFor(modelItem => item.GID)
+                        </td>*@
+                        @*<td>
+                            @Html.DisplayFor(modelItem => item.GroupsEnabled)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ItemPath)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ItemType)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ParentID)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.PosterPath)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ItemDirectory)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.VideoPresent)
+                        </td>*@
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Name)
+                        </td>
+                        @*<td>
+                            @Html.DisplayFor(modelItem => item.Catalog)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.LastEdit)
+                        </td>*@
+                        <td>
+                            @Html.DisplayFor(modelItem => item.AltTitle)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Country)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Year)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Month)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Day)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Rated)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.XRated)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Stage)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Variant)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Kind)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Serie)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Type)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Brand)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Star)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.MyDescr)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Director)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Studio)
+                        </td>
+                        @*<td>
+                            @Html.DisplayFor(modelItem => item.IMDB)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.PersonName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.PersonAge)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.PersonSex)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.PersonType)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.PersonKind)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.LastCheck)
+                        </td>*@
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Size)
+                        </td>
+                        @*<td>
+                            @Html.DisplayFor(modelItem => item.Length)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.CommentsAsString)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.SourceFolderExist)
+                        </td>*@
+                        @*<td>
+                            @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                            @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                            @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                        </td>*@
+                    </tr>
+                }
+            </tbody>
+        </table>

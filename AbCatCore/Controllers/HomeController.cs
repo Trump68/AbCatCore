@@ -13,9 +13,9 @@ namespace AbCatCore.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-        private readonly ICatalogDb _Db;
+        private readonly ICatalogDataContext _Db;
 
-        public HomeController(ILogger<HomeController> logger, ICatalogDb catalogDb)
+        public HomeController(ILogger<HomeController> logger, ICatalogDataContext catalogDb)
         {
             _logger = logger;
             _Db = catalogDb;
@@ -24,7 +24,7 @@ namespace AbCatCore.Controllers
         public IActionResult Index()
         {
             _Db.Load();
-            return View();
+            return RedirectToAction("Index","CatalogItems");
         }
 
         public IActionResult Privacy()

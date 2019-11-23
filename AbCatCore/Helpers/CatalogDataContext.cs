@@ -6,7 +6,7 @@ using EPCat.Model;
 
 namespace AbCatCore.Helpers
 {
-    public class CatalogDb : ICatalogDb
+    public class CatalogDataContext : ICatalogDataContext
     {
 
         private List<EpItem> _Items;

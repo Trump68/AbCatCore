@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace AbCatCore.Helpers
 {
-    public interface ICatalogDb
+    public interface ICatalogDataContext
     {
         List<EpItem> Items { get; }
         void Load();
