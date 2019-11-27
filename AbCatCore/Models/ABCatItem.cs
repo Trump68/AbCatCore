@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel.DataAnnotations;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -57,6 +58,7 @@ namespace EPCat.Model
         internal static string CatalogPosterDir;
 
         public Guid GID { get; set; }
+        public string sGID { get { return GID.ToString(); } }
         public bool GroupsEnabled { get { return true; } }
         public string ItemPath { get; set; }
         public readonly int _itemType;//0-Folder

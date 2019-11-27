@@ -1,0 +1,12 @@
+﻿@model AbCatCore.Models.MovieSceneInfo
+
+<div class="text-center">
+    <video id="video" width="1080" height="900">
+        <source src="~/Video/Intro.mp4" type="video/mp4">
+    </video>
+    <input id="startbtn" type="button" data-id=@Model value="Start">
+    <div id="posstart" data-rank=@Model.PositionStart> </div>
+    <div id="posend" data-rank=@Model.PositionEnd> </div>
+</div>
+
+

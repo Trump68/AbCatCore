@@ -1,0 +1,152 @@
+﻿@model EPCat.Model.EpItem
+@using (Html.BeginForm("Edit", "CatalogItems", new { sGID = @Model.sGID }, FormMethod.Post))
+{
+<table class="table">
+    @*<thead>
+        <tr>
+            <th>Surveyor</th>
+            <th>Date</th>
+            <th>M.V.</th>
+            <th>4-6 Week</th>
+            <th>Valuation to Use</th>
+            <th>Use</th>
+            <th>Report Received</th>
+            <th width="70"></th>
+        </tr>
+    </thead>*@
+    <tbody>
+        <tr>
+            @*<td>
+                @Html.HiddenFor(model => model.sGID)
+            </td>*@
+            @*<td>
+            @Html.LabelFor(modelItem => item.GID)
+        </td>*@
+            @*<td>
+            @Html.LabelFor(modelItem => item.GroupsEnabled)
+        </td>
+        <td>
+            @Html.LabelFor(modelItem => item.ItemPath)
+        </td>
+        <td>
+            @Html.LabelFor(modelItem => item.ItemType)
+        </td>
+        <td>
+            @Html.LabelFor(modelItem => item.ParentID)
+        </td>
+        <td>
+            @Html.LabelFor(modelItem => item.PosterPath)
+        </td>
+        <td>
+            @Html.LabelFor(modelItem => item.ItemDirectory)
+        </td>
+        <td>
+            @Html.LabelFor(modelItem => item.VideoPresent)
+        </td>*@
+            <td>
+                @Html.LabelFor(model => model.Name, new { style = "width:100px;" })
+            </td>
+            @*<td>
+            @Html.LabelFor(modelItem => item.Catalog)
+        </td>
+        <td>
+            @Html.LabelFor(modelItem => item.LastEdit)
+        </td>*@
+            <td>
+                @Html.LabelFor(model => model.AltTitle)
+            </td>
+            <td>
+                @Html.LabelFor(model => model.Country)
+            </td>
+            <td>
+                @Html.LabelFor(model => model.Year)
+            </td>
+            <td>
+                @Html.LabelFor(model => model.Month)
+            </td>
+            <td>
+                @Html.LabelFor(model => model.Day)
+            </td>
+            <td>
+                @Html.LabelFor(model => model.Rated)
+            </td>
+            <td>
+                @Html.LabelFor(model => model.XRated)
+            </td>
+            <td>
+                @Html.LabelFor(model => model.Stage)
+            </td>
+            <td>
+                @Html.LabelFor(model => model.Variant)
+            </td>
+            <td>
+                @Html.LabelFor(model => model.Kind)
+            </td>
+            <td>
+                @Html.LabelFor(model => model.Serie)
+            </td>
+            <td>
+                @Html.LabelFor(model => model.Type)
+            </td>
+            <td>
+                @Html.LabelFor(model => model.Brand)
+            </td>
+            <td>
+                @Html.LabelFor(model => model.Star)
+            </td>
+            <td>
+                @Html.LabelFor(model => model.MyDescr)
+            </td>
+            <td>
+                @Html.LabelFor(model => model.Director)
+            </td>
+            <td>
+                @Html.LabelFor(model => model.Studio)
+            </td>
+            @*<td>
+            @Html.LabelFor(modelItem => item.IMDB)
+        </td>
+        <td>
+            @Html.LabelFor(modelItem => item.PersonName)
+        </td>
+        <td>
+            @Html.LabelFor(modelItem => item.PersonAge)
+        </td>
+        <td>
+            @Html.LabelFor(modelItem => item.PersonSex)
+        </td>
+        <td>
+            @Html.LabelFor(modelItem => item.PersonType)
+        </td>
+        <td>
+            @Html.LabelFor(modelItem => item.PersonKind)
+        </td>
+        <td>
+            @Html.LabelFor(modelItem => item.LastCheck)
+        </td>*@
+            <td>
+                @Html.LabelFor(model => model.Size)
+            </td>
+            @*<td>
+            @Html.LabelFor(modelItem => item.Length)
+        </td>
+        <td>
+            @Html.LabelFor(modelItem => item.CommentsAsString)
+        </td>
+        <td>
+            @Html.LabelFor(modelItem => item.SourceFolderExist)
+        </td>*@
+            @*<td>
+            @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+            @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+            @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+        </td>*@
+
+            <td>
+                <input id="btnSubmit_@Model.sGID" type="submit" value="Update" class="btn btn-info" />
+            </td>
+        </tr>
+    </tbody>
+
+</table>
+}

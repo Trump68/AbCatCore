@@ -15,4 +15,13 @@
     <PackageReference Include="System.Drawing.Common" Version="4.6.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Scripts\Components\VideoWidget\" />
+    <Folder Include="wwwroot\Video\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\js\VideoWidget.js" />
+  </ItemGroup>
+
 </Project>

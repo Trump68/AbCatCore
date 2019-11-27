@@ -1,0 +1,11 @@
+﻿@{
+    ViewData["Title"] = "Screen";
+}
+
+@section js
+{
+    <script src="~/js/VideoWidget.js" asp-append-version="true"></script>'
+}
+
+@await Component.InvokeAsync("VideoWidget");
+

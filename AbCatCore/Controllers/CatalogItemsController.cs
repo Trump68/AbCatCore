@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AbCatCore.Helpers;
+using AbCatCore.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -14,6 +15,7 @@ namespace AbCatCore.Controllers
         private readonly ICatalogDataContext _context;
         private readonly IConfiguration _configuration;
 
+        private static string currentGid = null;
         public CatalogItemsController(ICatalogDataContext context, IConfiguration configuration)
         {
             _context = context;
@@ -24,6 +26,20 @@ namespace AbCatCore.Controllers
         public ActionResult Index()
         {
             return View(_context.Items);
+        }
+
+        // GET: CatItem
+        public ActionResult Screen()
+        {
+            var item = _context.Items.FirstOrDefault(x => x.sGID == currentGid);
+            if (item != null)
+            {
+                MovieSceneInfo data = new MovieSceneInfo();
+                data.PositionStart = 30;
+                data.PositionEnd = 35;
+                return View(data);
+            }
+            return new EmptyResult();
         }
 
         // GET: CatItem/Details/5
@@ -56,15 +72,25 @@ namespace AbCatCore.Controllers
         }
 
         // GET: CatItem/Edit/5
-        public ActionResult Edit(int id)
+        public ActionResult Edit(string sGID)
         {
-            return View();
+            //return View();
+            try
+            {
+                // TODO: Add update logic here
+                currentGid = sGID;
+                return RedirectToAction(nameof(Screen));
+            }
+            catch
+            {
+                return View();
+            }
         }
 
         // POST: CatItem/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public ActionResult Edit(string sGID, IFormCollection collection)
         {
             try
             {

@@ -249,11 +249,11 @@
                         <td>
                             @Html.DisplayFor(modelItem => item.SourceFolderExist)
                         </td>*@
-                        @*<td>
-                            @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                            @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                            @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
-                        </td>*@
+                        <td>
+                            @Html.ActionLink("Edit", "Edit", new {  sGID=item.sGID  }) |
+                            @*@Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                            @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })*@
+                        </td>
                     </tr>
                 }
             </tbody>
